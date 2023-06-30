@@ -5,9 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 
 class ContactManagerTest {
     ContactManager contactManager;
+    @BeforeAll
+    public static void setUpAll() {
+        System.out.println("Should Print Before All Tests");
+    }
+
     @BeforeEach
     public void setUp() {
         System.out.println("Should Print Before Each Tests");
@@ -83,5 +90,15 @@ class ContactManagerTest {
             contactManager.addContact("John","Doe", "1234567890");
         });
         Assertions.assertEquals("Phone Number Should Start with 0", exception.getMessage());
+    }
+
+    @AfterAll
+    public static void CleanUpAll() {
+        System.out.println("Should Print After All Tests");
+    }
+
+    @AfterEach
+    public void CleanUp() {
+        System.out.println("Should Print After Each Tests");
     }
 }
