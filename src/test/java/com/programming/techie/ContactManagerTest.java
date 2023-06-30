@@ -13,4 +13,31 @@ class ContactManagerTest {
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
+
+    @Test
+    @DisplayName("Should Not Create A Contact When Fist Name is Null")
+    public void shouldThrowRuntimeExceptionWhenFirstNameIsNull() {
+        ContactManager contactManager = new ContactManager();
+        Assertions.assertThrows( RuntimeException.class, () -> {
+            contactManager.addContact(null,"Doe", "0123456789");
+        });
+    }
+
+    @Test
+    @DisplayName("Should Not Create A Contact When Last Name is Null")
+    public void shouldThrowRuntimeExceptionWhenLastNameIsNull() {
+        ContactManager contactManager = new ContactManager();
+        Assertions.assertThrows( RuntimeException.class, () -> {
+            contactManager.addContact("John",null, "0123456789");
+        });
+    }
+
+    @Test
+    @DisplayName("Should Not Create A Contact When Phone Number is Null")
+    public void shouldThrowRuntimeExceptionWhenPhoneNumberIsNull() {
+        ContactManager contactManager = new ContactManager();
+        Assertions.assertThrows( RuntimeException.class, () -> {
+            contactManager.addContact("John","Doe", null);
+        });
+    }
 }
