@@ -4,6 +4,10 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import java.util.List;
 
 class ContactManagerTest {
     ContactManager contactManager;
@@ -116,12 +120,20 @@ class ContactManagerTest {
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
 
-
     @DisplayName("Repeat Contact Creation Test 5 Times")
     @RepeatedTest(value = 5,
         name = "Repeat Contact Creation Test {currentRepetition} of {totalRepetitions}" )
     public void shouldTestContactCreationRepeatedly() {
         contactManager.addContact("John","Doe", "0123456789");
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    @DisplayName("Phone Number should match the required Format")
+    @ParameterizedTest
+    @ValueSource(strings = {"0123456789", "0245789367", "0103948554"})
+    public void shouldTestPhoneNumberFormatUsingValueSource(String phoneNumber) {
+        contactManager.addContact("John", "Doe", phoneNumber);
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
