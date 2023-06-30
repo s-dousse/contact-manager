@@ -1,16 +1,9 @@
 package com.programming.techie;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.Assumptions;
 
 class ContactManagerTest {
     ContactManager contactManager;
@@ -118,6 +111,16 @@ class ContactManagerTest {
     @DisplayName("Test Contact Creation on Developer Machine")
     public void shouldTestContactCreationOnDEV() {
         Assumptions.assumeTrue("DEV".equals(System.getenv("ENV")));
+        contactManager.addContact("John","Doe", "0123456789");
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+
+    @DisplayName("Repeat Contact Creation Test 5 Times")
+    @RepeatedTest(value = 5,
+        name = "Repeat Contact Creation Test {currentRepetition} of {totalRepetitions}" )
+    public void shouldTestContactCreationRepeatedly() {
         contactManager.addContact("John","Doe", "0123456789");
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
