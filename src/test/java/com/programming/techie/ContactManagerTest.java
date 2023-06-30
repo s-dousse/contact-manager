@@ -138,6 +138,19 @@ class ContactManagerTest {
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
 
+    @DisplayName("Method Source Case - Phone Number should match the required Format")
+    @ParameterizedTest
+    @MethodSource("phoneNumberList")
+    public void shouldTestPhoneNumberFormatUsingMethodSource(String phoneNumber) {
+        contactManager.addContact("John", "Doe", phoneNumber);
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    private static List<String> phoneNumberList() {
+        return java.util.Arrays.asList("0123456789", "0245789367", "0103948554");
+    }
+
     @AfterAll
     public static void CleanUpAll() {
         System.out.println("Should Print After All Tests");
