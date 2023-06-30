@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.Assumptions;
 
 class ContactManagerTest {
     ContactManager contactManager;
@@ -108,6 +109,15 @@ class ContactManagerTest {
     @DisplayName("Should Not Create Contact on Windows OS")
     @DisabledOnOs(value = OS.WINDOWS, disabledReason = "Disabled on Windows OS")
     public void shouldNotCreateContactOnWindows() {
+        contactManager.addContact("John","Doe", "0123456789");
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    @Test
+    @DisplayName("Test Contact Creation on Developer Machine")
+    public void shouldTestContactCreationOnDEV() {
+        Assumptions.assumeTrue("DEV".equals(System.getenv("ENV")));
         contactManager.addContact("John","Doe", "0123456789");
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
