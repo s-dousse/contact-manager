@@ -19,17 +19,17 @@ public class Contact {
     }
 
     public void validateFirstName() {
-        if (this.firstName.isBlank())
+        if (isNotSet(this.firstName))
             throw new RuntimeException("First Name Cannot be null or empty");
     }
 
     public void validateLastName() {
-        if (this.lastName.isBlank())
+        if (isNotSet(this.lastName))
             throw new RuntimeException("Last Name Cannot be null or empty");
     }
 
     public void validatePhoneNumber() {
-        if (this.phoneNumber.isBlank()) {
+        if (isNotSet(this.phoneNumber)) {
             throw new RuntimeException("Phone Number Cannot be null or empty");
         }
 
@@ -43,5 +43,8 @@ public class Contact {
             throw new RuntimeException("Phone Number Should Start with 0");
         }
     }
-}
 
+    private boolean isNotSet(String s) {
+        return s == null || s.isEmpty() || s.isBlank();
+    }
+}
