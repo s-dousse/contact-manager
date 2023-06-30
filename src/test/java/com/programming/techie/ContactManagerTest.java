@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 class ContactManagerTest {
     ContactManager contactManager;
@@ -90,6 +93,24 @@ class ContactManagerTest {
             contactManager.addContact("John","Doe", "1234567890");
         });
         Assertions.assertEquals("Phone Number Should Start with 0", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should Create Contact On MAC OS")
+    @EnabledOnOs(value = OS.MAC, disabledReason = "Enabled Only On MAC OS")
+    public void shouldCreateContactOnlyOnMac() {
+        contactManager.addContact("John","Doe", "0123456789");
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    @Test
+    @DisplayName("Should Not Create Contact on Windows OS")
+    @DisabledOnOs(value = OS.WINDOWS, disabledReason = "Disabled on Windows OS")
+    public void shouldNotCreateContactOnWindows() {
+        contactManager.addContact("John","Doe", "0123456789");
+        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+        Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
 
     @AfterAll
