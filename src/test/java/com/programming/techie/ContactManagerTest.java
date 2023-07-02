@@ -122,24 +122,7 @@ class ContactManagerTest {
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
 
-    @DisplayName("Repeat Contact Creation Test 5 Times")
-    @RepeatedTest(value = 5,
-        name = "Repeat Contact Creation Test {currentRepetition} of {totalRepetitions}" )
-    public void shouldTestContactCreationRepeatedly() {
-        contactManager.addContact("John","Doe", "0123456789");
-        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-        Assertions.assertEquals(1, contactManager.getAllContacts().size());
-    }
-
-    @DisplayName("Phone Number should match the required Format")
-    @ParameterizedTest
-    @ValueSource(strings = {"0123456789", "0245789367", "0103948554"})
-    public void shouldTestPhoneNumberFormatUsingValueSource(String phoneNumber) {
-        contactManager.addContact("John", "Doe", phoneNumber);
-        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-        Assertions.assertEquals(1, contactManager.getAllContacts().size());
-    }
-
+    // Can not be moved to parameterized nested tests group as phoneNumberList is static
     @DisplayName("Method Source Case - Phone Number should match the required Format")
     @ParameterizedTest
     @MethodSource("phoneNumberList")
@@ -153,24 +136,6 @@ class ContactManagerTest {
         return java.util.Arrays.asList("0123456789", "0245789367", "0103948554");
     }
 
-    @DisplayName("CSV Source Case - Phone Number should match the required Format")
-    @ParameterizedTest
-    @CsvSource({"0123456789", "0245789367", "0103948554"})
-    public void shouldTestPhoneNumberFormatUsingCSVSource(String phoneNumber) {
-        contactManager.addContact("John", "Doe", phoneNumber);
-        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-        Assertions.assertEquals(1, contactManager.getAllContacts().size());
-    }
-
-    @DisplayName("CSV File Source Case - Phone Number should match the required Format")
-    @ParameterizedTest
-    @CsvFileSource(resources = "/data.csv")
-    public void shouldTestPhoneNumberFormatUsingCSVFileSource(String phoneNumber) {
-        contactManager.addContact("John", "Doe", phoneNumber);
-        Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-        Assertions.assertEquals(1, contactManager.getAllContacts().size());
-    }
-
     @AfterAll
     public static void CleanUpAll() {
         System.out.println("Should Print After All Tests");
@@ -179,5 +144,56 @@ class ContactManagerTest {
     @AfterEach
     public void CleanUp() {
         System.out.println("Should Print After Each Tests");
+    }
+
+    @Nested
+    class RepeatedNestedTest {
+        @BeforeEach
+        public void SetUp() {
+            System.out.println("Should Print Before Each Repeated Nested Tests");
+        }
+        @DisplayName("Repeat Contact Creation Test 5 Times")
+        @RepeatedTest(value = 5,
+                name = "Repeat Contact Creation Test {currentRepetition} of {totalRepetitions}" )
+        public void shouldTestContactCreationRepeatedly() {
+            contactManager.addContact("John","Doe", "0123456789");
+            Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+            Assertions.assertEquals(1, contactManager.getAllContacts().size());
+        }
+    }
+
+    @Nested
+    class ParameterizedNestedTest {
+        @DisplayName("Phone Number should match the required Format")
+        @ParameterizedTest
+        @ValueSource(strings = {"0123456789", "0245789367", "0103948554"})
+        public void shouldTestPhoneNumberFormatUsingValueSource(String phoneNumber) {
+            contactManager.addContact("John", "Doe", phoneNumber);
+            Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+            Assertions.assertEquals(1, contactManager.getAllContacts().size());
+        }
+
+        @DisplayName("CSV Source Case - Phone Number should match the required Format")
+        @ParameterizedTest
+        @CsvSource({"0123456789", "0245789367", "0103948554"})
+        public void shouldTestPhoneNumberFormatUsingCSVSource(String phoneNumber) {
+            contactManager.addContact("John", "Doe", phoneNumber);
+            Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+            Assertions.assertEquals(1, contactManager.getAllContacts().size());
+        }
+
+        @DisplayName("CSV File Source Case - Phone Number should match the required Format")
+        @ParameterizedTest
+        @CsvFileSource(resources = "/data.csv")
+        public void shouldTestPhoneNumberFormatUsingCSVFileSource(String phoneNumber) {
+            contactManager.addContact("John", "Doe", phoneNumber);
+            Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+            Assertions.assertEquals(1, contactManager.getAllContacts().size());
+        }
+
+        @AfterEach
+        public void CleanUp() {
+            System.out.println("Should Print After Each Parameterized Nested Tests");
+        }
     }
 }
